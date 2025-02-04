@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { marketStats } from '../../data/presentationData';
+import type { MarketStat, AdditionalStats, MarketStats } from '../../types';
 
 interface StatDetailProps {
   isOpen: boolean;

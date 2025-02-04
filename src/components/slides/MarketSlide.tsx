@@ -2,7 +2,16 @@ import { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { marketSegments, competitiveAnalysis } from '../../data/presentationData';
 
-const CustomTooltip = ({ active, payload }: any) => {
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    name: string;
+    value: number;
+    payload: MarketSegment;
+  }>;
+}
+
+const CustomTooltip = ({ active, payload }: TooltipProps) => {
   if (active && payload && payload[0]) {
     const segment = marketSegments.find(seg => seg.name === payload[0].name);
     return (

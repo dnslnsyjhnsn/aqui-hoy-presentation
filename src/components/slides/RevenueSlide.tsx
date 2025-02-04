@@ -13,7 +13,16 @@ import { revenueProjections } from '../../data/presentationData';
 const formatCurrency = (value: number) => `$${value.toFixed(1)}B`;
 const formatVisitors = (value: number) => `${value.toFixed(1)}M`;
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    value: number;
+    dataKey: string;
+  }>;
+  label?: string;
+}
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
