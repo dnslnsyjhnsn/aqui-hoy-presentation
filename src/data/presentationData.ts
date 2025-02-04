@@ -48,13 +48,13 @@ export const marketSegments: MarketSegment[] = [
   },
 ];
 
-// Updated with real Panama tourism growth projections
+// Update revenue projections to realistic small luxury eco-resort numbers
 export const revenueProjections: RevenueProjection[] = [
-  { year: '2024', revenue: 0.0, visitors: 0 },    // Planning phase
-  { year: '2025', revenue: 2.1, visitors: 3.8 },  // Initial operations
-  { year: '2026', revenue: 3.2, visitors: 5.2 },  // Growth phase
-  { year: '2027', revenue: 3.8, visitors: 6.1 },  // Stabilization
-  { year: '2028', revenue: 4.2, visitors: 6.8 }   // Mature operations
+  { year: '2024', revenue: 0.2, visitors: 0.4 },  // Soft launch phase
+  { year: '2025', revenue: 0.8, visitors: 1.2 },  // First full year
+  { year: '2026', revenue: 1.2, visitors: 1.8 },  // Growth phase
+  { year: '2027', revenue: 1.5, visitors: 2.2 },  // Stabilization
+  { year: '2028', revenue: 1.8, visitors: 2.5 }   // Mature operations
 ];
 
 // Based on Panama Tourism Authority 2023-2024 reports
@@ -62,26 +62,26 @@ export const marketStats = {
   visitorGrowth: {
     title: 'Projected Growth',
     value: '8.6%',
-    description: 'Projected year-over-year growth based on market analysis',
-    source: 'Internal projections based on Panama Tourism Authority trends',
-    methodology: 'Based on historical growth patterns in similar markets',
+    description: 'Current operations with planned expansion',
+    source: 'Internal data and regional market analysis',
+    methodology: 'Based on current bookings and market response',
     breakdown: [
-      { label: 'Current', value: 'Planning Phase' },
-      { label: 'Year 1', value: 'Initial Operations' }
+      { label: 'Current', value: 'Limited Operations' },
+      { label: 'Year 1', value: 'Full Operations' }
     ],
-    note: 'Projections based on comparable properties in the region'
+    note: 'Growth projections based on current booking trends'
   },
   marketRevenue: {
-    title: 'Market Opportunity',
-    value: '$4.2M',
-    description: 'Projected annual revenue at stable operation',
-    source: 'Financial modeling based on regional comparables',
-    methodology: 'Based on occupancy rates and average daily rates of similar properties',
+    title: 'Annual Revenue',
+    value: '$0.2M',
+    description: 'Current annual revenue with growth plans',
+    source: 'Current operations and expansion plans',
+    methodology: 'Based on current rates and occupancy',
     breakdown: [
-      { label: 'Current', value: 'Pre-revenue' },
-      { label: 'Year 1 Target', value: '$2.1M' }
+      { label: 'Current', value: '$0.2M' },
+      { label: 'Year 1 Target', value: '$0.8M' }
     ],
-    note: 'Initial projections subject to market conditions'
+    note: 'Expansion planned for 2025'
   },
   averageStay: {
     title: 'Target Stay Duration',
