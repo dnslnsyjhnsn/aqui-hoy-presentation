@@ -34,4 +34,4 @@ export interface MarketStat {
   trends?: { period: string; value: string | number }[];
   comparisonData?: { region: string; value: string | number }[];
   note?: string;
-} 
+}
