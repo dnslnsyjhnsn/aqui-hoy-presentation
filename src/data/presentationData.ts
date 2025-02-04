@@ -48,65 +48,65 @@ export const marketSegments: MarketSegment[] = [
   },
 ];
 
-// Update revenue projections to realistic small luxury eco-resort numbers
+// Update projections to show monthly visitors and revenue
 export const revenueProjections: RevenueProjection[] = [
-  { year: '2024', revenue: 0.2, visitors: 0.4 },  // Soft launch phase
-  { year: '2025', revenue: 0.8, visitors: 1.2 },  // First full year
-  { year: '2026', revenue: 1.2, visitors: 1.8 },  // Growth phase
-  { year: '2027', revenue: 1.5, visitors: 2.2 },  // Stabilization
-  { year: '2028', revenue: 1.8, visitors: 2.5 }   // Mature operations
+  { year: '2024', revenue: 0.216, visitors: 0.432 },  // Current: $18K/mo, ~36 guests/mo
+  { year: '2025', revenue: 0.480, visitors: 0.960 },  // Phase 2: 8 villas
+  { year: '2026', revenue: 0.720, visitors: 1.440 },  // Phase 3: 12 villas
+  { year: '2027', revenue: 0.960, visitors: 1.920 },  // Full capacity
+  { year: '2028', revenue: 1.080, visitors: 2.160 }   // Optimized operations
 ];
 
 // Based on Panama Tourism Authority 2023-2024 reports
 export const marketStats = {
   visitorGrowth: {
-    title: 'Projected Growth',
-    value: '8.6%',
-    description: 'Current operations with planned expansion',
-    source: 'Internal data and regional market analysis',
-    methodology: 'Based on current bookings and market response',
+    title: 'Current Growth',
+    value: '12%',
+    description: 'Month-over-month booking growth',
+    source: 'Current booking data',
+    methodology: 'Based on confirmed reservations',
     breakdown: [
-      { label: 'Current', value: 'Limited Operations' },
-      { label: 'Year 1', value: 'Full Operations' }
+      { label: 'Last Month', value: '32 guests' },
+      { label: 'This Month', value: '36 guests' }
     ],
-    note: 'Growth projections based on current booking trends'
+    note: 'Early operations phase with growing bookings'
   },
   marketRevenue: {
-    title: 'Annual Revenue',
-    value: '$0.2M',
-    description: 'Current annual revenue with growth plans',
-    source: 'Current operations and expansion plans',
-    methodology: 'Based on current rates and occupancy',
+    title: 'Monthly Revenue',
+    value: '$18K',
+    description: 'Average monthly revenue from operations',
+    source: 'Current operational data',
+    methodology: 'Based on actual bookings and services',
     breakdown: [
-      { label: 'Current', value: '$0.2M' },
-      { label: 'Year 1 Target', value: '$0.8M' }
+      { label: 'Accommodations', value: '$12K' },
+      { label: 'Services & Activities', value: '$6K' }
     ],
-    note: 'Expansion planned for 2025'
+    note: 'Current operations at 4 eco-villas'
   },
   averageStay: {
-    title: 'Target Stay Duration',
-    value: '4.5 days',
-    description: 'Expected average guest stay duration',
-    source: 'Regional tourism statistics and target market analysis',
+    title: 'Average Stay',
+    value: '3.8 days',
+    description: 'Current average guest duration',
+    source: 'Booking data from current operations',
     breakdown: [
-      { label: 'Short Stay', value: '2-3 days' },
-      { label: 'Extended Stay', value: '7+ days' }
+      { label: 'Weekend Stays', value: '2-3 days' },
+      { label: 'Extended Stays', value: '5+ days' }
     ],
-    note: 'Based on comparable properties and target market preferences'
+    note: 'Based on actual guest data'
   },
   occupancyRate: {
-    title: 'Target Occupancy',
-    value: '72%',
-    description: 'Projected stabilized occupancy rate',
-    source: 'Industry benchmarks for luxury eco-resorts',
+    title: 'Current Occupancy',
+    value: '45%',
+    description: 'Average occupancy rate',
+    source: 'Current booking data',
     breakdown: [
-      { label: 'Year 1 Target', value: '55%' },
-      { label: 'Stabilized', value: '72%' }
+      { label: 'Weekday', value: '35%' },
+      { label: 'Weekend', value: '65%' }
     ],
     comparisonData: [
-      { region: 'Regional Average', value: '65%' }
+      { region: 'Local Average', value: '42%' }
     ],
-    note: 'Projections for stabilized operations (Year 3+)'
+    note: 'Early phase operations with 4 villas'
   },
   additionalStats: {
     repeatVisitors: 28, // percentage
