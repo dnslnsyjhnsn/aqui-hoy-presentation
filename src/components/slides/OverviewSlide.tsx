@@ -6,130 +6,131 @@ import { marketStats } from '../../data/presentationData';
 interface StatDetailProps {
   isOpen: boolean;
   onClose: () => void;
-  stat: {
-    title: string;
-    value: string | number;
-    description: string;
-    source: string;
-    methodology?: string;
-    breakdown?: { label: string; value: string | number }[];
-    trends?: { period: string; value: string | number }[];
-    comparisonData?: { region: string; value: string | number }[];
-  };
+  stat: MarketStat | AdditionalStats;
 }
 
-const StatDetail: React.FC<StatDetailProps> = ({ isOpen, onClose, stat }) => (
-  <Transition appear show={isOpen} as={Fragment}>
-    <Dialog as="div" className="relative z-10" onClose={onClose}>
-      <Transition.Child
-        as={Fragment}
-        enter="ease-out duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="ease-in duration-200"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <div className="fixed inset-0 bg-black bg-opacity-25" />
-      </Transition.Child>
+const StatDetail: React.FC<StatDetailProps> = ({ isOpen, onClose, stat }) => {
+  if (!isMarketStat(stat)) {
+    return null; // or handle AdditionalStats differently
+  }
 
-      <div className="fixed inset-0 overflow-y-auto">
-        <div className="flex min-h-full items-center justify-center p-4">
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0 scale-95"
-            enterTo="opacity-100 scale-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100 scale-100"
-            leaveTo="opacity-0 scale-95"
-          >
-            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-              <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                {stat.title}
-              </Dialog.Title>
-              
-              <div className="mt-4">
-                <div className="text-3xl font-bold text-primary-600 mb-2">
-                  {stat.value}
-                </div>
-                <p className="text-sm text-gray-600 mb-4">
-                  {stat.description}
-                </p>
+  return (
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={onClose}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                  {stat.title}
+                </Dialog.Title>
                 
-                {stat.breakdown && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-800 mb-2">Breakdown</h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      {stat.breakdown.map((item, index) => (
-                        <div key={index} className="bg-gray-50 p-2 rounded">
-                          <div className="text-xs text-gray-600">{item.label}</div>
-                          <div className="text-sm font-medium">{item.value}</div>
-                        </div>
-                      ))}
-                    </div>
+                <div className="mt-4">
+                  <div className="text-3xl font-bold text-primary-600 mb-2">
+                    {stat.value}
                   </div>
-                )}
-
-                {stat.trends && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-800 mb-2">Historical Trend</h4>
-                    <div className="space-y-2">
-                      {stat.trends.map((trend, index) => (
-                        <div key={index} className="flex justify-between text-sm">
-                          <span className="text-gray-600">{trend.period}</span>
-                          <span className="font-medium">{trend.value}</span>
-                        </div>
-                      ))}
+                  <p className="text-sm text-gray-600 mb-4">
+                    {stat.description}
+                  </p>
+                  
+                  {stat.breakdown && (
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Breakdown</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {stat.breakdown.map((item, index) => (
+                          <div key={index} className="bg-gray-50 p-2 rounded">
+                            <div className="text-xs text-gray-600">{item.label}</div>
+                            <div className="text-sm font-medium">{item.value}</div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-
-                {stat.comparisonData && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-800 mb-2">Regional Comparison</h4>
-                    <div className="space-y-2">
-                      {stat.comparisonData.map((item, index) => (
-                        <div key={index} className="flex justify-between text-sm">
-                          <span className="text-gray-600">{item.region}</span>
-                          <span className="font-medium">{item.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <h4 className="text-sm font-semibold text-gray-800 mb-1">Source</h4>
-                  <p className="text-xs text-gray-600">{stat.source}</p>
-                  {stat.methodology && (
-                    <>
-                      <h4 className="text-sm font-semibold text-gray-800 mt-2 mb-1">Methodology</h4>
-                      <p className="text-xs text-gray-600">{stat.methodology}</p>
-                    </>
                   )}
-                </div>
-              </div>
 
-              <div className="mt-6">
-                <button
-                  type="button"
-                  className="inline-flex justify-center rounded-md border border-transparent bg-primary-100 px-4 py-2 text-sm font-medium text-primary-900 hover:bg-primary-200 focus:outline-none"
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-              </div>
-            </Dialog.Panel>
-          </Transition.Child>
+                  {stat.trends && (
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Historical Trend</h4>
+                      <div className="space-y-2">
+                        {stat.trends.map((trend, index) => (
+                          <div key={index} className="flex justify-between text-sm">
+                            <span className="text-gray-600">{trend.period}</span>
+                            <span className="font-medium">{trend.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {stat.comparisonData && (
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Regional Comparison</h4>
+                      <div className="space-y-2">
+                        {stat.comparisonData.map((item, index) => (
+                          <div key={index} className="flex justify-between text-sm">
+                            <span className="text-gray-600">{item.region}</span>
+                            <span className="font-medium">{item.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <h4 className="text-sm font-semibold text-gray-800 mb-1">Source</h4>
+                    <p className="text-xs text-gray-600">{stat.source}</p>
+                    {stat.methodology && (
+                      <>
+                        <h4 className="text-sm font-semibold text-gray-800 mt-2 mb-1">Methodology</h4>
+                        <p className="text-xs text-gray-600">{stat.methodology}</p>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center rounded-md border border-transparent bg-primary-100 px-4 py-2 text-sm font-medium text-primary-900 hover:bg-primary-200 focus:outline-none"
+                    onClick={onClose}
+                  >
+                    Close
+                  </button>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
         </div>
-      </div>
-    </Dialog>
-  </Transition>
-);
+      </Dialog>
+    </Transition>
+  );
+};
 
 export function OverviewSlide() {
-  const [selectedStat, setSelectedStat] = useState<keyof typeof marketStats | null>(null);
+  const [selectedStat, setSelectedStat] = useState<keyof Omit<MarketStats, 'additionalStats'> | null>(null);
+
+  const isMarketStat = (stat: MarketStat | AdditionalStats): stat is MarketStat => {
+    return 'title' in stat;
+  };
 
   return (
     <div className="min-h-[80vh] flex flex-col justify-center items-center p-8">
