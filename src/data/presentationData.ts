@@ -50,66 +50,63 @@ export const marketSegments: MarketSegment[] = [
 
 // Updated with real Panama tourism growth projections
 export const revenueProjections: RevenueProjection[] = [
-  { year: '2024', revenue: 5.0, visitors: 2.1 },
-  { year: '2025', revenue: 5.8, visitors: 2.4 },
-  { year: '2026', revenue: 6.7, visitors: 2.8 },
-  { year: '2027', revenue: 7.8, visitors: 3.2 },
-  { year: '2028', revenue: 9.0, visitors: 3.6 },
+  { year: '2024', revenue: 0.0, visitors: 0 },    // Planning phase
+  { year: '2025', revenue: 2.1, visitors: 3.8 },  // Initial operations
+  { year: '2026', revenue: 3.2, visitors: 5.2 },  // Growth phase
+  { year: '2027', revenue: 3.8, visitors: 6.1 },  // Stabilization
+  { year: '2028', revenue: 4.2, visitors: 6.8 }   // Mature operations
 ];
 
 // Based on Panama Tourism Authority 2023-2024 reports
 export const marketStats = {
   visitorGrowth: {
-    title: 'Visitor Growth',
+    title: 'Projected Growth',
     value: '8.6%',
-    description: 'Year-over-year growth in tourist arrivals',
-    source: 'UNWTO Tourism Barometer 2023 & ATP Public Reports',
-    methodology: 'Combined data from public tourism reports and industry analyses',
+    description: 'Projected year-over-year growth based on market analysis',
+    source: 'Internal projections based on Panama Tourism Authority trends',
+    methodology: 'Based on historical growth patterns in similar markets',
     breakdown: [
-      { label: 'International', value: '6.8%' },
-      { label: 'Regional', value: '1.8%' }
+      { label: 'Current', value: 'Planning Phase' },
+      { label: 'Year 1', value: 'Initial Operations' }
     ],
-    comparisonData: [
-      { region: 'Central America Avg', value: '7.2%' }
-    ],
-    note: 'Data aggregated from publicly available tourism reports. Detailed breakdown estimated based on regional trends.'
+    note: 'Projections based on comparable properties in the region'
   },
   marketRevenue: {
-    title: 'Market Revenue',
-    value: '$4.99B',
-    description: 'Estimated total tourism revenue for the region',
-    source: 'World Bank Tourism Data 2023, ATP Economic Reports',
-    methodology: 'Based on public economic indicators and tourism sector reports',
+    title: 'Market Opportunity',
+    value: '$4.2M',
+    description: 'Projected annual revenue at stable operation',
+    source: 'Financial modeling based on regional comparables',
+    methodology: 'Based on occupancy rates and average daily rates of similar properties',
     breakdown: [
-      { label: 'Direct Tourism', value: '$3.2B' },
-      { label: 'Related Services', value: '$1.79B' }
+      { label: 'Current', value: 'Pre-revenue' },
+      { label: 'Year 1 Target', value: '$2.1M' }
     ],
-    note: 'Figures are estimates based on publicly available economic indicators'
+    note: 'Initial projections subject to market conditions'
   },
   averageStay: {
-    title: 'Average Stay',
+    title: 'Target Stay Duration',
     value: '4.5 days',
-    description: 'Average duration of tourist visits',
-    source: 'ATP Tourism Statistics 2023',
+    description: 'Expected average guest stay duration',
+    source: 'Regional tourism statistics and target market analysis',
     breakdown: [
-      { label: 'Short Stay', value: '3-5 days' },
+      { label: 'Short Stay', value: '2-3 days' },
       { label: 'Extended Stay', value: '7+ days' }
     ],
-    note: 'Based on immigration data and hotel industry reports'
+    note: 'Based on comparable properties and target market preferences'
   },
   occupancyRate: {
-    title: 'Occupancy Rate',
+    title: 'Target Occupancy',
     value: '72%',
-    description: 'Average hotel occupancy rate in the region',
-    source: 'Panama Hotel Association Public Data',
+    description: 'Projected stabilized occupancy rate',
+    source: 'Industry benchmarks for luxury eco-resorts',
     breakdown: [
-      { label: 'Peak Season', value: '85%' },
-      { label: 'Off Season', value: '60%' }
+      { label: 'Year 1 Target', value: '55%' },
+      { label: 'Stabilized', value: '72%' }
     ],
     comparisonData: [
-      { region: 'Central America', value: '70%' }
+      { region: 'Regional Average', value: '65%' }
     ],
-    note: 'Rates are averaged across reporting hotels in the region'
+    note: 'Projections for stabilized operations (Year 3+)'
   },
   additionalStats: {
     repeatVisitors: 28, // percentage
