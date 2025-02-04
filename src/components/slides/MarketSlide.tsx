@@ -3,6 +3,9 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { marketSegments, competitiveAnalysis } from '../../data/presentationData';
 import type { MarketSegment } from '../../types';
 
+// Add RADIAN constant at the top
+const RADIAN = Math.PI / 180;
+
 interface TooltipProps {
   active?: boolean;
   payload?: Array<{
