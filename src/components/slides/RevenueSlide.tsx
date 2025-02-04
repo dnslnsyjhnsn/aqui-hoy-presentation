@@ -18,6 +18,7 @@ interface TooltipProps {
   payload?: Array<{
     value: number;
     dataKey: string;
+    name: string;
   }>;
   label?: string;
 }

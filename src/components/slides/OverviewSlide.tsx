@@ -10,6 +10,10 @@ interface StatDetailProps {
   stat: MarketStat | AdditionalStats;
 }
 
+const isMarketStat = (stat: MarketStat | AdditionalStats): stat is MarketStat => {
+  return 'title' in stat;
+};
+
 const StatDetail: React.FC<StatDetailProps> = ({ isOpen, onClose, stat }) => {
   if (!isMarketStat(stat)) {
     return null; // or handle AdditionalStats differently
@@ -128,10 +132,6 @@ const StatDetail: React.FC<StatDetailProps> = ({ isOpen, onClose, stat }) => {
 
 export function OverviewSlide() {
   const [selectedStat, setSelectedStat] = useState<keyof Omit<MarketStats, 'additionalStats'> | null>(null);
-
-  const isMarketStat = (stat: MarketStat | AdditionalStats): stat is MarketStat => {
-    return 'title' in stat;
-  };
 
   return (
     <div className="min-h-[80vh] flex flex-col justify-center items-center p-8">

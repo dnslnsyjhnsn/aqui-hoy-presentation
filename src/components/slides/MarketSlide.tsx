@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { marketSegments, competitiveAnalysis } from '../../data/presentationData';
+import type { MarketSegment } from '../../types';
 
 interface TooltipProps {
   active?: boolean;
@@ -32,15 +33,16 @@ const CustomTooltip = ({ active, payload }: TooltipProps) => {
   return null;
 };
 
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({ cx, cy, midAngle, outerRadius, percent, name }: {
+interface CustomLabelProps {
   cx: number;
   cy: number;
   midAngle: number;
   outerRadius: number;
   percent: number;
   name: string;
-}) => {
+}
+
+const renderCustomizedLabel = ({ cx, cy, midAngle, outerRadius, percent, name }: CustomLabelProps) => {
   const radius = outerRadius * 1.35; // Increased radius to push labels further out
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
