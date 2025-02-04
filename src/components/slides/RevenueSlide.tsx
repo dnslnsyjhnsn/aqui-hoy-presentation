@@ -8,7 +8,8 @@ import {
   ResponsiveContainer,
   Legend
 } from 'recharts';
-import { revenueProjections } from '../../data/presentationData';
+import { revenueProjections, growthMetrics } from '../../data/presentationData';
+import { useState } from 'react';
 
 const formatCurrency = (value: number) => `$${value.toFixed(1)}B`;
 const formatVisitors = (value: number) => `${value.toFixed(1)}M`;
@@ -41,6 +42,8 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
 };
 
 export function RevenueSlide() {
+  const [selectedMetric, setSelectedMetric] = useState<keyof typeof growthMetrics | null>(null);
+
   return (
     <div className="min-h-[80vh] flex flex-col justify-center items-center p-8">
       <h2 className="text-3xl font-bold text-gray-900 mb-8">
@@ -116,14 +119,19 @@ export function RevenueSlide() {
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-white p-6 rounded-xl shadow-lg">
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Key Growth Indicators
+              Key Growth Metrics
             </h3>
             <ul className="space-y-3">
-              <li className="flex items-center text-gray-700">
-                <span className="w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center mr-3">
-                  📈
-                </span>
-                <span>Revenue CAGR: 15.8%</span>
+              <li>
+                <button 
+                  onClick={() => setSelectedMetric('cagr')}
+                  className="w-full text-left flex items-center text-gray-700 hover:bg-gray-50 p-2 rounded"
+                >
+                  <span className="w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center mr-3">
+                    📈
+                  </span>
+                  <span>Revenue CAGR: {growthMetrics.cagr.value}</span>
+                </button>
               </li>
               <li className="flex items-center text-gray-700">
                 <span className="w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center mr-3">
@@ -167,6 +175,14 @@ export function RevenueSlide() {
           </div>
         </div>
       </div>
+
+      {selectedMetric && (
+        <MetricDetail
+          isOpen={!!selectedMetric}
+          onClose={() => setSelectedMetric(null)}
+          metric={growthMetrics[selectedMetric]}
+        />
+      )}
     </div>
   );
 } 

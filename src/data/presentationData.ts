@@ -129,4 +129,47 @@ export const competitiveAnalysis = {
     'Strong digital connectivity',
     'Favorable investment climate'
   ]
+};
+
+export const growthMetrics = {
+  cagr: {
+    title: 'Revenue CAGR',
+    value: '49.6%',
+    description: 'Compound Annual Growth Rate from current state to 2028',
+    source: 'Financial projections based on current operations',
+    methodology: 'CAGR = (Final Value/Initial Value)^(1/n) - 1\n' +
+                'Where n = 4 years, Initial = $0.216M, Final = $1.080M',
+    breakdown: [
+      { label: '2024', value: '$0.216M' },
+      { label: '2028 Target', value: '$1.080M' }
+    ],
+    calculation: [
+      { label: 'Time Period', value: '4 years' },
+      { label: 'Starting Revenue', value: '$216K/year' },
+      { label: 'Final Revenue', value: '$1.08M/year' }
+    ],
+    note: 'Based on expansion from 4 to 12 villas over 4 years'
+  },
+  visitorGrowth: {
+    title: 'Annual Visitor Growth',
+    value: '49.6%',
+    description: 'Projected visitor growth with expanded capacity',
+    source: 'Operational expansion plans',
+    breakdown: [
+      { label: '2024', value: '432 visitors/year' },
+      { label: '2028 Target', value: '2,160 visitors/year' }
+    ],
+    note: 'Growth tied to villa expansion and improved occupancy'
+  },
+  revenuePerVisitor: {
+    title: 'Revenue per Visitor',
+    value: '$500',
+    description: 'Average revenue per guest stay',
+    source: 'Current operational data',
+    breakdown: [
+      { label: 'Accommodation', value: '$375' },
+      { label: 'Activities', value: '$125' }
+    ],
+    note: 'Based on current average 3.8 day stay'
+  }
 }; 
