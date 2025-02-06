@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { marketStats } from '../../data/presentationData';
 import type { MarketStat, AdditionalStats, MarketStats } from '../../types';
+import { investmentHighlights } from '../../data/investmentHighlights';
 
 interface StatDetailProps {
   isOpen: boolean;
@@ -130,8 +131,112 @@ const StatDetail: React.FC<StatDetailProps> = ({ isOpen, onClose, stat }) => {
   );
 };
 
+interface HighlightDetailProps {
+  isOpen: boolean;
+  onClose: () => void;
+  highlight: typeof investmentHighlights[keyof typeof investmentHighlights];
+}
+
+const HighlightDetail: React.FC<HighlightDetailProps> = ({ isOpen, onClose, highlight }) => {
+  return (
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={onClose}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Title as="h3" className="text-2xl font-bold mb-4">
+                  {highlight.title}
+                </Dialog.Title>
+                
+                <div className="mt-4">
+                  <p className="text-gray-600 mb-4">{highlight.details.description}</p>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Key Features</h4>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {highlight.details.keyPoints.map((point, i) => (
+                          <li key={i} className="text-gray-600">{point}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Metrics</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {highlight.details.metrics.map((metric, i) => (
+                          <div key={i} className="bg-gray-50 p-2 rounded">
+                            <div className="text-xs text-gray-600">{metric.label}</div>
+                            <div className="text-sm font-medium">{metric.value}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="border-t border-gray-200 pt-4">
+                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Sources</h4>
+                      {highlight.details.sources.map((source, i) => (
+                        <div key={i} className="mb-3">
+                          <p className="text-sm font-medium text-gray-900">{source.name} ({source.year})</p>
+                          <p className="text-sm text-gray-600">{source.keyFindings}</p>
+                          {source.url && (
+                            <a 
+                              href={source.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-primary-600 hover:text-primary-800"
+                            >
+                              View Source →
+                            </a>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-6">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-primary-100 px-4 py-2 text-sm font-medium text-primary-900 hover:bg-primary-200 focus:outline-none"
+                      onClick={onClose}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
+  );
+};
+
 export function OverviewSlide() {
   const [selectedStat, setSelectedStat] = useState<keyof Omit<MarketStats, 'additionalStats'> | null>(null);
+  const [selectedHighlight, setSelectedHighlight] = useState<keyof typeof investmentHighlights | null>(null);
 
   return (
     <div className="min-h-[80vh] flex flex-col justify-center items-center p-8">
@@ -145,23 +250,38 @@ export function OverviewSlide() {
             Investment Highlights
           </h2>
           <ul className="space-y-3">
-            <li className="flex items-center text-gray-700">
-              <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
-                📈
-              </span>
-              <span>Premium location in growing market</span>
+            <li>
+              <button
+                onClick={() => setSelectedHighlight('location')}
+                className="w-full flex items-center text-gray-700 hover:bg-gray-50 p-2 rounded transition-colors"
+              >
+                <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
+                  {investmentHighlights.location.icon}
+                </span>
+                <span>{investmentHighlights.location.title}</span>
+              </button>
             </li>
-            <li className="flex items-center text-gray-700">
-              <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
-                🌿
-              </span>
-              <span>Sustainable eco-tourism focus</span>
+            <li>
+              <button
+                onClick={() => setSelectedHighlight('sustainability')}
+                className="w-full flex items-center text-gray-700 hover:bg-gray-50 p-2 rounded transition-colors"
+              >
+                <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
+                  {investmentHighlights.sustainability.icon}
+                </span>
+                <span>{investmentHighlights.sustainability.title}</span>
+              </button>
             </li>
-            <li className="flex items-center text-gray-700">
-              <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
-                💻
-              </span>
-              <span>Digital nomad friendly facilities</span>
+            <li>
+              <button
+                onClick={() => setSelectedHighlight('digitalNomad')}
+                className="w-full flex items-center text-gray-700 hover:bg-gray-50 p-2 rounded transition-colors"
+              >
+                <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
+                  {investmentHighlights.digitalNomad.icon}
+                </span>
+                <span>{investmentHighlights.digitalNomad.title}</span>
+              </button>
             </li>
           </ul>
         </div>
@@ -216,6 +336,14 @@ export function OverviewSlide() {
           isOpen={!!selectedStat}
           onClose={() => setSelectedStat(null)}
           stat={marketStats[selectedStat]}
+        />
+      )}
+
+      {selectedHighlight && (
+        <HighlightDetail
+          isOpen={!!selectedHighlight}
+          onClose={() => setSelectedHighlight(null)}
+          highlight={investmentHighlights[selectedHighlight]}
         />
       )}
     </div>

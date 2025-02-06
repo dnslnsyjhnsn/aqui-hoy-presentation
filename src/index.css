@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities; 
+@tailwind utilities;
+
+.highlight-button {
+  @apply w-full flex items-center text-gray-700 hover:bg-gray-50 p-2 rounded transition-colors relative;
+}
+
+.highlight-button::after {
+  content: '🔍';
+  @apply absolute right-2 opacity-0 transition-opacity;
+}
+
+.highlight-button:hover::after {
+  @apply opacity-100;
+} 
