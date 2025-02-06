@@ -48,11 +48,51 @@ export const marketSegments: MarketSegment[] = [
   },
 ];
 
-// Update projections to show monthly visitors and revenue
+// Update property details based on architectural plans
+export const propertyDetails = {
+  villas: {
+    current: {
+      count: 4,
+      size: {
+        interior: 64.5, // m2
+        total: 89.6,    // m2 including terraces
+      },
+      features: [
+        'Private bathroom',
+        'Kitchenette',
+        'Covered terrace',
+        'Natural ventilation'
+      ]
+    },
+    planned: {
+      phases: [
+        { year: '2024', count: 4, status: 'Operational' },
+        { year: '2025', count: 8, status: 'Planned' },
+        { year: '2026', count: 12, status: 'Planned' }
+      ]
+    }
+  },
+  site: {
+    features: [
+      'Natural slope integration',
+      'Ocean views',
+      'Protected forest area',
+      'Central common area'
+    ],
+    sustainability: [
+      'Natural drainage system',
+      'Cross-ventilation design',
+      'Local materials usage',
+      'Minimal site impact'
+    ]
+  }
+};
+
+// Update revenue projections based on actual villa count and size
 export const revenueProjections: RevenueProjection[] = [
-  { year: '2024', revenue: 0.216, visitors: 0.432 },  // Current: $18K/mo, ~36 guests/mo
-  { year: '2025', revenue: 0.480, visitors: 0.960 },  // Phase 2: 8 villas
-  { year: '2026', revenue: 0.720, visitors: 1.440 },  // Phase 3: 12 villas
+  { year: '2024', revenue: 0.216, visitors: 0.432 },  // 4 villas
+  { year: '2025', revenue: 0.480, visitors: 0.960 },  // 8 villas
+  { year: '2026', revenue: 0.720, visitors: 1.440 },  // 12 villas
   { year: '2027', revenue: 0.960, visitors: 1.920 },  // Full capacity
   { year: '2028', revenue: 1.080, visitors: 2.160 }   // Optimized operations
 ];
