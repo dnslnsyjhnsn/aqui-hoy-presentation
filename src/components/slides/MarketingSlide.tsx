@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import {
   PieChart, Pie, Cell, ResponsiveContainer,
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+  CartesianGrid, Tooltip,
   LineChart, Line
 } from 'recharts';
 
@@ -225,8 +225,6 @@ const DetailModal: React.FC<DetailModalProps> = ({ isOpen, onClose, title, conte
                         <ResponsiveContainer width="100%" height="100%">
                           <LineChart data={content.projections}>
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="month" />
-                            <YAxis />
                             <Tooltip />
                             <Line type="monotone" dataKey="revenue" stroke="#0ea5e9" name="Revenue" />
                             <Line type="monotone" dataKey="spend" stroke="#f59e0b" name="Spend" />
