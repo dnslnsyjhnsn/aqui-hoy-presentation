@@ -10,18 +10,27 @@ export interface MarketSegment {
   name: string;
   value: number;
   color: string;
+  icon: string;
+  description: string;
+  keyFeatures: string[];
+  metrics: Array<{ label: string; value: string }>;
+  sources: Array<{
+    name: string;
+    year: number;
+    keyFindings: string;
+    url?: string;
+  }>;
   details: {
     avgStayDays: number;
     avgSpendPerDay: number;
     topOrigins: string[];
-    interests: string[];
   };
   strategy: {
     positioning: string;
     channels: string[];
     offerings: string[];
     pricing: {
-      base: number;  // Base rate per night
+      base: number;
       packages: Array<{
         name: string;
         duration: number;
@@ -137,17 +146,207 @@ export interface GrowthMetric {
   source: string;
   methodology: string;
   breakdown: Array<{ label: string; value: string }>;
-  explanation?: string[];
   yearByYear?: Array<{
     year: string;
     growth: string;
     reason: string;
   }>;
-  note: string;
 }
 
 export interface GrowthMetrics {
   cagr: GrowthMetric;
   visitorGrowth: GrowthMetric;
   revenuePerVisitor: GrowthMetric;
+}
+
+export interface SeasonalPeriod {
+  name: string;
+  months: string[];
+  occupancy: number;
+  rate: number;
+  notes: string;
+  activities?: string[];
+  weather?: {
+    temp: { min: number; max: number };
+    rainfall: number;
+    humidity: number;
+    conditions: string[];
+  };
+}
+
+export interface Season {
+  periods: SeasonalPeriod[];
+  averageOccupancy: number;
+  averageDailyRate: number;
+  weatherConditions: string;
+  targetMarkets: string[];
+  source: string;
+  marketing?: {
+    channels: string[];
+    promotions: string[];
+    packages: Array<{
+      name: string;
+      price: number;
+      duration: number;
+      includes: string[];
+    }>;
+  };
+  activities?: {
+    recommended: string[];
+    indoor: string[];
+    outdoor: string[];
+  };
+}
+
+export interface SeasonalAnalysis {
+  highSeason: Season;
+  shoulderSeason: Season;
+  lowSeason: Season;
+  revenueCalculation: {
+    [key: string]: {
+      days: number;
+      revenue: number;
+      visitors: number;
+    };
+  };
+}
+
+export interface StaffingAnalysis {
+  current: {
+    fullTime: {
+      operations: number;
+      description: string;
+      responsibilities: string[];
+      salary: {
+        base: number;
+        benefits: number;
+        source: string;
+      };
+    };
+    partTime: {
+      cleaning: {
+        count: number;
+        hoursPerWeek: number;
+        ratePerHour: number;
+        annualCost: number;
+        source: string;
+      };
+      maintenance: {
+        count: number;
+        hoursPerWeek: number;
+        ratePerHour: number;
+        annualCost: number;
+        source: string;
+      };
+    };
+    contractors: {
+      [key: string]: {
+        frequency: string;
+        annualCost: number;
+        scope: string[];
+      };
+    };
+    totalAnnualCost: number;
+    costPerVilla: number;
+    industryBenchmark: {
+      source: string;
+      averageCostPerRoom: number;
+      ourPerformance: string;
+    };
+  };
+  futureNeeds: {
+    [phase: string]: {
+      additional: {
+        [role: string]: {
+          role?: string;
+          salary?: number;
+          timing: string;
+          count?: number;
+          annualCost?: number;
+          justification?: string;
+        };
+      };
+      projectedTotalCost: number;
+      costPerVilla: number;
+    };
+  };
+  training: {
+    initial: {
+      programs: string[];
+      cost: number;
+      duration: string;
+      provider: string;
+    };
+    ongoing: {
+      programs: string[];
+      annualCost: number;
+      frequency: string;
+    };
+    certifications: {
+      required: string[];
+      costs: {
+        initial: number;
+        renewal: number;
+        frequency: string;
+      };
+    };
+  };
+  laborLaws: {
+    source: string;
+    keyRequirements: string[];
+    compliance: {
+      monitoring: string;
+      reporting: string;
+    };
+  };
+  industryComparison: {
+    source: string;
+    metrics: {
+      staffPerRoom: {
+        luxury: number;
+        upscale: number;
+        ourTarget: number;
+        note: string;
+      };
+      turnoverRate: {
+        industry: string;
+        ourTarget: string;
+        retention: string[];
+      };
+    };
+  };
+}
+
+export interface TaxAnalysis {
+  reporting: {
+    forms: {
+      rentaJuridica: {
+        sections: {
+          ingresos: {
+            hospedaje: number;
+            alquiler: number;
+            otrosIngresos: number;
+          };
+          gastos: {
+            salarios: number;
+            prestaciones: number;
+            servicios: number;
+            mantenimiento: number;
+          };
+        };
+      };
+      itbms: {
+        rate: number;
+      };
+    };
+  };
+  incentives: {
+    tourism: {
+      benefits: string[];
+      duration: string;
+    };
+  };
+  deductions: {
+    documentation: string[];
+  };
 }

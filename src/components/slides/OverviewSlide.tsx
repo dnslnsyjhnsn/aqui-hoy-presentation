@@ -1,143 +1,84 @@
-import { useState } from 'react';
+import React from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
-import { marketStats } from '../../data/presentationData';
-import type { MarketStat, AdditionalStats, MarketStats } from '../../types';
-import { investmentHighlights } from '../../data/investmentHighlights';
+import { Fragment, useState } from 'react';
+import { visitorAnalysis } from '../../data/visitorAnalysis';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  Bar,
+  BarChart
+} from 'recharts';
 
 interface StatDetailProps {
   isOpen: boolean;
   onClose: () => void;
-  stat: MarketStat | AdditionalStats;
+  title: string;
+  value: string;
+  data: any;
+  type: 'visitor' | 'revenue' | 'stay' | 'occupancy';
 }
 
-const isMarketStat = (stat: MarketStat | AdditionalStats): stat is MarketStat => {
-  return 'title' in stat;
-};
+const StatDetail: React.FC<StatDetailProps> = ({ isOpen, onClose, title, value, data, type }) => {
+  const renderChart = () => {
+    switch (type) {
+      case 'visitor':
+        return (
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={visitorAnalysis.visitor.growthProjections.monthly}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Area type="monotone" dataKey="visitors" stroke="#0ea5e9" fill="#0ea5e9" fillOpacity={0.1} />
+            </AreaChart>
+          </ResponsiveContainer>
+        );
+      case 'revenue':
+        return (
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={data.projections}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="year" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="revenue" stroke="#14b8a6" />
+            </LineChart>
+          </ResponsiveContainer>
+        );
+      case 'stay':
+        return (
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={data.historical}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="avgStay" fill="#f59e0b" />
+            </BarChart>
+          </ResponsiveContainer>
+        );
+      case 'occupancy':
+        return (
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={data.seasonal}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="occupancy" stroke="#0ea5e9" />
+            </LineChart>
+          </ResponsiveContainer>
+        );
+    }
+  };
 
-const StatDetail: React.FC<StatDetailProps> = ({ isOpen, onClose, stat }) => {
-  if (!isMarketStat(stat)) {
-    return null; // or handle AdditionalStats differently
-  }
-
-  return (
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
-        </Transition.Child>
-
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                  {stat.title}
-                </Dialog.Title>
-                
-                <div className="mt-4">
-                  <div className="text-3xl font-bold text-primary-600 mb-2">
-                    {stat.value}
-                  </div>
-                  <p className="text-sm text-gray-600 mb-4">
-                    {stat.description}
-                  </p>
-                  
-                  {stat.breakdown && (
-                    <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Breakdown</h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        {stat.breakdown.map((item, index) => (
-                          <div key={index} className="bg-gray-50 p-2 rounded">
-                            <div className="text-xs text-gray-600">{item.label}</div>
-                            <div className="text-sm font-medium">{item.value}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {stat.trends && (
-                    <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Historical Trend</h4>
-                      <div className="space-y-2">
-                        {stat.trends.map((trend, index) => (
-                          <div key={index} className="flex justify-between text-sm">
-                            <span className="text-gray-600">{trend.period}</span>
-                            <span className="font-medium">{trend.value}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {stat.comparisonData && (
-                    <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Regional Comparison</h4>
-                      <div className="space-y-2">
-                        {stat.comparisonData.map((item, index) => (
-                          <div key={index} className="flex justify-between text-sm">
-                            <span className="text-gray-600">{item.region}</span>
-                            <span className="font-medium">{item.value}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <h4 className="text-sm font-semibold text-gray-800 mb-1">Source</h4>
-                    <p className="text-xs text-gray-600">{stat.source}</p>
-                    {stat.methodology && (
-                      <>
-                        <h4 className="text-sm font-semibold text-gray-800 mt-2 mb-1">Methodology</h4>
-                        <p className="text-xs text-gray-600">{stat.methodology}</p>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-primary-100 px-4 py-2 text-sm font-medium text-primary-900 hover:bg-primary-200 focus:outline-none"
-                    onClick={onClose}
-                  >
-                    Close
-                  </button>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
-  );
-};
-
-interface HighlightDetailProps {
-  isOpen: boolean;
-  onClose: () => void;
-  highlight: typeof investmentHighlights[keyof typeof investmentHighlights];
-}
-
-const HighlightDetail: React.FC<HighlightDetailProps> = ({ isOpen, onClose, highlight }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -166,53 +107,41 @@ const HighlightDetail: React.FC<HighlightDetailProps> = ({ isOpen, onClose, high
             >
               <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title as="h3" className="text-2xl font-bold mb-4">
-                  {highlight.title}
+                  {title}
                 </Dialog.Title>
                 
                 <div className="mt-4">
-                  <p className="text-gray-600 mb-4">{highlight.details.description}</p>
-                  
-                  <div className="space-y-6">
+                  <div className="mb-6">
+                    <p className="text-4xl font-bold text-primary-600">{value}</p>
+                    <p className="text-sm text-gray-600 mt-1">{data.description}</p>
+                  </div>
+
+                  <div className="mb-6">
+                    {renderChart()}
+                  </div>
+
+                  <div className="space-y-4">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Key Features</h4>
-                      <ul className="list-disc pl-5 space-y-1">
-                        {highlight.details.keyPoints.map((point, i) => (
-                          <li key={i} className="text-gray-600">{point}</li>
-                        ))}
-                      </ul>
+                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Source</h4>
+                      <p className="text-sm text-gray-600">{data.source}</p>
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Metrics</h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        {highlight.details.metrics.map((metric, i) => (
-                          <div key={i} className="bg-gray-50 p-2 rounded">
-                            <div className="text-xs text-gray-600">{metric.label}</div>
-                            <div className="text-sm font-medium">{metric.value}</div>
+                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Methodology</h4>
+                      <p className="text-sm text-gray-600">{data.methodology}</p>
+                    </div>
+
+                    {data.supportingData && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-800 mb-2">Supporting Data</h4>
+                        {Object.entries(data.supportingData).map(([key, value]: [string, any]) => (
+                          <div key={key} className="mb-2">
+                            <p className="text-sm font-medium">{value.source}</p>
+                            <p className="text-sm text-gray-600">{value.findings}</p>
                           </div>
                         ))}
                       </div>
-                    </div>
-
-                    <div className="border-t border-gray-200 pt-4">
-                      <h4 className="text-sm font-semibold text-gray-800 mb-2">Sources</h4>
-                      {highlight.details.sources.map((source, i) => (
-                        <div key={i} className="mb-3">
-                          <p className="text-sm font-medium text-gray-900">{source.name} ({source.year})</p>
-                          <p className="text-sm text-gray-600">{source.keyFindings}</p>
-                          {source.url && (
-                            <a 
-                              href={source.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs text-primary-600 hover:text-primary-800"
-                            >
-                              View Source →
-                            </a>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                    )}
                   </div>
 
                   <div className="mt-6">
@@ -235,98 +164,71 @@ const HighlightDetail: React.FC<HighlightDetailProps> = ({ isOpen, onClose, high
 };
 
 export function OverviewSlide() {
-  const [selectedStat, setSelectedStat] = useState<keyof Omit<MarketStats, 'additionalStats'> | null>(null);
-  const [selectedHighlight, setSelectedHighlight] = useState<keyof typeof investmentHighlights | null>(null);
+  const [selectedStat, setSelectedStat] = useState<'visitor' | 'revenue' | 'stay' | 'occupancy' | null>(null);
 
   return (
     <div className="min-h-[80vh] flex flex-col justify-center items-center p-8">
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">
+      <h2 className="text-3xl font-bold text-gray-900 mb-8">
         Aqui Hoy Resort Investment
-      </h1>
-      
+      </h2>
+
       <div className="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
+        {/* Investment Highlights */}
         <div className="bg-white p-6 rounded-xl shadow-lg">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
             Investment Highlights
-          </h2>
-          <ul className="space-y-3">
-            <li>
-              <button
-                onClick={() => setSelectedHighlight('location')}
-                className="w-full flex items-center text-gray-700 hover:bg-gray-50 p-2 rounded transition-colors"
-              >
-                <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
-                  {investmentHighlights.location.icon}
-                </span>
-                <span>{investmentHighlights.location.title}</span>
-              </button>
+          </h3>
+          <ul className="space-y-4">
+            <li className="flex items-center">
+              <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
+                📍
+              </span>
+              <span>Premium location in growing market</span>
             </li>
-            <li>
-              <button
-                onClick={() => setSelectedHighlight('sustainability')}
-                className="w-full flex items-center text-gray-700 hover:bg-gray-50 p-2 rounded transition-colors"
-              >
-                <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
-                  {investmentHighlights.sustainability.icon}
-                </span>
-                <span>{investmentHighlights.sustainability.title}</span>
-              </button>
+            <li className="flex items-center">
+              <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
+                🌿
+              </span>
+              <span>Sustainable eco-tourism focus</span>
             </li>
-            <li>
-              <button
-                onClick={() => setSelectedHighlight('digitalNomad')}
-                className="w-full flex items-center text-gray-700 hover:bg-gray-50 p-2 rounded transition-colors"
-              >
-                <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
-                  {investmentHighlights.digitalNomad.icon}
-                </span>
-                <span>{investmentHighlights.digitalNomad.title}</span>
-              </button>
+            <li className="flex items-center">
+              <span className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-3">
+                💻
+              </span>
+              <span>Digital nomad friendly facilities</span>
             </li>
           </ul>
         </div>
-        
+
+        {/* Key Statistics */}
         <div className="bg-white p-6 rounded-xl shadow-lg">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
             Key Statistics
-          </h2>
+          </h3>
           <div className="grid grid-cols-2 gap-4">
             <button
-              onClick={() => setSelectedStat('visitorGrowth')}
-              className="text-center p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors"
+              onClick={() => setSelectedStat('visitor')}
+              className="bg-primary-50 p-4 rounded-lg hover:bg-primary-100 transition-colors"
             >
-              <div className="text-3xl font-bold text-primary-600">
-                {marketStats.visitorGrowth.value}
-              </div>
-              <div className="text-sm text-gray-600">Visitor Growth</div>
+              <p className="text-sm text-gray-600">Visitor Growth</p>
+              <p className="text-2xl font-bold text-primary-600">72%</p>
+              <p className="text-xs text-gray-500 mt-1">Source: ATP Tourism Statistics 2023</p>
             </button>
-            <button
-              onClick={() => setSelectedStat('marketRevenue')}
-              className="text-center p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors"
-            >
-              <div className="text-3xl font-bold text-primary-600">
-                {marketStats.marketRevenue.value}
-              </div>
-              <div className="text-sm text-gray-600">Market Revenue</div>
-            </button>
-            <button
-              onClick={() => setSelectedStat('averageStay')}
-              className="text-center p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors"
-            >
-              <div className="text-3xl font-bold text-primary-600">
-                {marketStats.averageStay.value}
-              </div>
-              <div className="text-sm text-gray-600">Avg. Stay (Days)</div>
-            </button>
-            <button
-              onClick={() => setSelectedStat('occupancyRate')}
-              className="text-center p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors"
-            >
-              <div className="text-3xl font-bold text-primary-600">
-                {marketStats.occupancyRate.value}
-              </div>
-              <div className="text-sm text-gray-600">Occupancy Rate</div>
-            </button>
+            <div className="bg-primary-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-600">Market Revenue</p>
+              <p className="text-2xl font-bold text-primary-600">$420K</p>
+              <p className="text-xs text-gray-500 mt-1">Annual Projected</p>
+            </div>
+            <div className="bg-primary-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-600">Avg. Stay</p>
+              <p className="text-2xl font-bold text-primary-600">3.8 days</p>
+              <p className="text-xs text-gray-500 mt-1">Current Average</p>
+            </div>
+            <div className="bg-primary-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-600">Occupancy Rate</p>
+              <p className="text-2xl font-bold text-primary-600">45%</p>
+              <p className="text-xs text-gray-500 mt-1">Current Average</p>
+            </div>
           </div>
         </div>
       </div>
@@ -335,15 +237,20 @@ export function OverviewSlide() {
         <StatDetail
           isOpen={!!selectedStat}
           onClose={() => setSelectedStat(null)}
-          stat={marketStats[selectedStat]}
-        />
-      )}
-
-      {selectedHighlight && (
-        <HighlightDetail
-          isOpen={!!selectedHighlight}
-          onClose={() => setSelectedHighlight(null)}
-          highlight={investmentHighlights[selectedHighlight]}
+          title={
+            selectedStat === 'visitor' ? 'Visitor Growth' :
+            selectedStat === 'revenue' ? 'Market Revenue' :
+            selectedStat === 'stay' ? 'Average Stay' :
+            'Occupancy Rate'
+          }
+          value={
+            selectedStat === 'visitor' ? '72%' :
+            selectedStat === 'revenue' ? '$420K' :
+            selectedStat === 'stay' ? '3.8 days' :
+            '45%'
+          }
+          data={visitorAnalysis[selectedStat]}
+          type={selectedStat}
         />
       )}
     </div>

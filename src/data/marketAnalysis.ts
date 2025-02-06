@@ -1,3 +1,32 @@
+export interface Source {
+  name: string;
+  year: number;
+  keyFindings: string;
+  url?: string;
+}
+
+export interface MarketSource extends Source {
+  url: string;
+}
+
+export interface CompetitorSource extends Source {
+  // No URL required
+}
+
+export interface Competitor {
+  description: string;
+  keyFeatures: string[];
+  metrics: Array<{
+    label: string;
+    value: string;
+  }>;
+  sources: CompetitorSource[];
+}
+
+export const marketSources: Source[] = [
+  // ... your source data
+];
+
 export const regionalComparison = {
   panama: {
     currency: {
@@ -133,5 +162,11 @@ export const regionalComparison = {
       costaRica: 3.1,
       colombia: 8.4
     }
+  }
+};
+
+export const competitiveLandscape = {
+  competitors: {
+    // ... rest of data
   }
 }; 

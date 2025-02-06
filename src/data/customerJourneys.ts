@@ -34,12 +34,27 @@ export const customerJourneys: Record<string, CustomerJourney> = {
           'Sustainable amenities'
         ]
       },
-      // ... continue with other phases
+      booking: {
+        process: ['Online booking', 'Email confirmation'],
+        averageTimeToBook: 5,
+        commonObstacles: ['Price comparison', 'Date availability']
+      },
+      experience: {
+        checkIn: ['Digital check-in'],
+        stay: ['Daily cleaning'],
+        activities: ['Guided tours'],
+        support: ['24/7 concierge']
+      },
+      retention: {
+        followUp: ['Thank you email'],
+        loyaltyProgram: ['Points system'],
+        repeatRate: 28
+      }
     },
     metrics: {
-      acquisitionCost: 85,
-      lifetimeValue: 2800,
-      repeatBookingRate: 0.35
+      acquisitionCost: 120,
+      lifetimeValue: 2400,
+      repeatBookingRate: 0.28
     }
   },
   // ... similar detailed journeys for other segments

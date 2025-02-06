@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
+import { staffingData } from '../../data/staffingData';
 
 interface DetailModalProps {
   isOpen: boolean;
@@ -195,15 +196,10 @@ const riskDetails = {
   },
   'Operational Scale': {
     description: 'Managing growth while maintaining quality',
-    details: [
-      'Staff training and retention',
-      'Service consistency at scale',
-      'Infrastructure capacity',
-      'Local resource management'
-    ],
+    details: staffingData.challenges,
     metrics: [
-      { label: 'Current Staff', value: '85' },
-      { label: 'Growth Need', value: '+40%' }
+      { label: 'Current Staff', value: staffingData.current.total.toString() },
+      { label: 'Growth Need', value: staffingData.growthNeed.percentage }
     ]
   },
   'Economic Factors': {

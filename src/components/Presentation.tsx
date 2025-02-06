@@ -2,14 +2,22 @@ import { useState } from 'react';
 import { OverviewSlide } from './slides/OverviewSlide';
 import { MarketSlide } from './slides/MarketSlide';
 import { RevenueSlide } from './slides/RevenueSlide';
+import { EquipmentSlide } from './slides/EquipmentSlide';
+import { TaxSlide } from './slides/TaxSlide';
 import { ImplementationSlide } from './slides/ImplementationSlide';
+import { SeasonalSlide } from './slides/SeasonalSlide';
+import { MarketingSlide } from './slides/MarketingSlide';
 import type { Slide } from '../types';
 
 const slides: Slide[] = [
   { id: 1, title: 'Overview', component: OverviewSlide },
   { id: 2, title: 'Market Analysis', component: MarketSlide },
   { id: 3, title: 'Revenue Projections', component: RevenueSlide },
-  { id: 4, title: 'Implementation', component: ImplementationSlide }
+  { id: 4, title: 'Equipment', component: EquipmentSlide },
+  { id: 5, title: 'Tax Analysis', component: TaxSlide },
+  { id: 6, title: 'Seasonal Analysis', component: SeasonalSlide },
+  { id: 7, title: 'Implementation', component: ImplementationSlide },
+  { id: 8, title: 'Marketing Plan', component: MarketingSlide }
 ];
 
 export function Presentation() {
